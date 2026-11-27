@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: smartchef-postgres
+    environment:
+      POSTGRES_DB: smartchefdb
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      TZ: Europe/Madrid
+    ports:
+      - "5432:5432"
+    volumes:
+      - smartchef-datos:/var/lib/postgresql/data
+      - ./src/main/resources/utils/script_smartchefdb.sql:/docker-entrypoint-initdb.d/01_script_smartchefdb.sql:ro
+      - ./src/main/resources/utils/datos_prueba_usuario.sql:/docker-entrypoint-initdb.d/02_datos_prueba_usuario.sql:ro
+
+volumes:
+  smartchef-datos:
